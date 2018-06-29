@@ -12,6 +12,9 @@ RUN mkdir -p $CFPLUGINS
 RUN mkdir -p $HOME/bin
 
 RUN cat /etc/apt/sources.list | sed 's/archive/us.archive/g' > /tmp/s && mv /tmp/s /etc/apt/sources.list
+RUN cat /etc/apt/sources.list | sed '/gce_debian_mirror\.storage\.googleapis\.com\/ jessie-backports/d' > /tmp/s && mv /tmp/s /etc/apt/sources.list
+RUN cat /etc/apt/sources.list | sed '/gce_debian_mirror\.storage\.googleapis\.com\/ stretch-backports/d' > /tmp/s && mv /tmp/s /etc/apt/sources.list
+RUN cat /etc/apt/sources.list | sed '/gce_debian_mirror\.storage\.googleapis\.com\/ stretch-updates/d' > /tmp/s && mv /tmp/s /etc/apt/sources.list
 
 RUN apt-get update && apt-get -y --no-install-recommends install wget curl
 RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
