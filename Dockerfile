@@ -16,16 +16,16 @@ RUN cat /etc/apt/sources.list | sed '/gce_debian_mirror\.storage\.googleapis\.co
 RUN cat /etc/apt/sources.list | sed '/gce_debian_mirror\.storage\.googleapis\.com\/ stretch-backports/d' > /tmp/s && mv /tmp/s /etc/apt/sources.list
 RUN cat /etc/apt/sources.list | sed '/gce_debian_mirror\.storage\.googleapis\.com\/ stretch-updates/d' > /tmp/s && mv /tmp/s /etc/apt/sources.list
 
+RUN echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
+RUN curl https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add -
+
 RUN apt-get update && apt-get -y --no-install-recommends install wget curl
 RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
            build-essential git ssh zip software-properties-common dnsutils \
            iputils-ping traceroute jq vim wget unzip sudo iperf screen tmux \
-           file tcpdump nmap less s3cmd s3curl direnv netcat npm nodejs-legacy \
-           apt-utils libdap-bin mysql-client mongodb-clients postgresql-client-9.5 \
+           file tcpdump nmap less s3cmd s3curl direnv netcat nodejs \
+           apt-utils libdap-bin mysql-client mongodb-clients postgresql-client-9.6 \
            redis-tools libpython2.7-dev libxml2-dev libxslt-dev
-
-RUN echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
-RUN curl https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add -
 
 RUN apt-get -y --no-install-recommends install spruce safe bosh-cli cf-cli \
   bosh-bootloader genesis gotcha shield eden certstrap credhub-cli om pks \
@@ -54,7 +54,12 @@ RUN cd /usr/local/bin && wget -q -O asg-creator \
 
 RUN cd /usr/local/bin && wget -q -O cf-mgmt \
     "$(curl -s https://api.github.com/repos/pivotalservices/cf-mgmt/releases/latest \
-    |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x cf-mgmt
+    |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v config)" && chmod +x cf-mgmt
+
+RUN cd /usr/local/bin && wget -q -O cf-mgmt \
+    "$(curl -s https://api.github.com/repos/pivotalservices/cf-mgmt/releases/latest \
+    |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep config)" && chmod +x cf-mgmt
+
 
 RUN cd /usr/local/bin && wget -q -O cliaas \
     "$(curl -s https://api.github.com/repos/pivotal-cf/cliaas/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x cliaas
