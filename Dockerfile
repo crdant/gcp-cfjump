@@ -21,7 +21,7 @@ RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
            apt-utils libdap-bin mysql-client mongodb-clients postgresql-client-9.5 \
            redis-tools libpython2.7-dev libxml2-dev libxslt-dev
 
-RUN echo "deb hhttp://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
+RUN echo "deb http://apt.starkandwayne.com stable main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
 RUN curl https://raw.githubusercontent.com/starkandwayne/homebrew-cf/master/public.key | apt-key add -
 
 RUN apt-get -y --no-install-recommends install spruce safe bosh-cli cf-cli \
