@@ -56,6 +56,9 @@ RUN cd /usr/local/bin && wget -q -O cf-mgmt \
 RUN cd /usr/local/bin && wget -q -O cliaas \
     "$(curl -s https://api.github.com/repos/pivotal-cf/cliaas/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x cliaas
 
+RUN cd /usr/local/bin && wget -q -O kiln \
+    "$(curl -s https://api.github.com/repos/pivotal-cf/kiln/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x kiln
+
 RUN cd $CFPLUGINS && wget -q -O autopilot \
     "$(curl -s https://api.github.com/repos/xchapter7x/autopilot/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux|grep -v zip)" && chmod +x autopilot
 
@@ -67,8 +70,6 @@ RUN cd $CFPLUGINS && wget -q -O cf-service-connect https://github.com/18F/cf-ser
 
 RUN cd /usr/local/bin && wget -q -O goblob \
     "$(curl -s https://api.github.com/repos/pivotal-cf/goblob/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x goblob
-
-RUN pip2 install tile-generator
 
 RUN mkdir -p .bucc && git clone https://github.com/starkandwayne/bucc.git && \
     ln -s $HOME/.bucc/bucc/bin/bucc /usr/local/bin/bucc
